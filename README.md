@@ -1,4 +1,77 @@
-php-openexchangerates
-=====================
+# OpenExchangeRates API PHP Wrapper
 
-A wrapper for OpenExchangeRates API
+Provides a wrapper for the [OpenExchangeRates API](http://openexchangerates.org).
+
+This JSON API allows you to get rates for various currencies, this projet will
+give you a simple class to work seamlessly (hopefully ;)) with it.
+
+*Disclaimer* : This tool is not endorsed by OpenExchangeRates, this is a
+completely independant work.
+
+## Get an APP ID
+
+First of all, you'll need an app id to make it work, you can get one here :
+https://openexchangerates.org/signup
+
+If you want to test it, you can register for a free plan here :
+https://openexchangerates.org/signup/free
+
+Please note that a free plan will not allow you to work in HTTPS, amongst
+other things. See at the bottom to know how to use the API in plain HTTP.
+
+## Get supported currencies
+
+You can see this data here :
+http://openexchangerates.org/api/currencies.json
+
+```php
+// You'll need to get an app id.
+define('OPENEXCHANGERATE_APP_ID', '123-123-123');
+
+$oer = new OpenExchangeRates( OPENEXCHANGERATE_APP_ID );
+
+// You'll get an object with all supported currencies
+$currencies = $oer->currencies();
+```
+
+## Get latest rates
+
+See here to see what you'll get :
+https://openexchangerates.org/documentation#preview-api-response
+
+```php
+$oer = new OpenExchangeRates( OPENEXCHANGERATE_APP_ID );
+$latest_rates = $eor->latest();
+
+// With a paying plan, you can change base currency like this :
+$latest_rates_in_euros = $eor->latest(array('base'=>'EUR'));
+```
+
+## Get historical rates (for paying customers only)
+
+See here to see what you'll get :
+https://openexchangerates.org/documentation#historical-data
+
+```php
+$one_month_ago = strftime('%Y-%m-%d', strtotime('- 1 month'));
+$rates_last_month = $eor->historical($one_month_ago);
+
+// You can list only certain currencies using additionnal parameters
+$rates_last_month = $eor->historical(
+	$one_month_ago,
+	array('currencies'=>array('EUR','USD')
+);
+```
+
+## Work in HTTP (for free plan)
+
+You can work in HTTP, though this is not the default behaviour (mainly
+because you should favour HTTPS to be sure there's no «man in the middle»
+for instance).
+
+```php
+$oer = new OpenExchangeRates(
+	OPENEXCHANGERATE_APP_ID,
+	OpenExchangeRates::PROTOCOL_HTTP
+);
+```
