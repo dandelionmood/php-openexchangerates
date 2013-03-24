@@ -19,6 +19,14 @@ https://openexchangerates.org/signup/free
 Please note that a free plan will not allow you to work in HTTPS, amongst
 other things. See at the bottom to know how to use the API in plain HTTP.
 
+## Installation
+
+You can easily install it through Composer and Packagist, see here for more
+instructions :
+
+ - http://getcomposer.org/doc/00-intro.md
+ - https://packagist.org/packages/dandelionmood/openexchangerates
+
 ## Get supported currencies
 
 You can see this data here :
@@ -59,7 +67,7 @@ $rates_last_month = $eor->historical($one_month_ago);
 // You can list only certain currencies using additionnal parameters
 $rates_last_month = $eor->historical(
 	$one_month_ago,
-	array('currencies'=>array('EUR','USD')
+	array('currencies'=>array('EUR','USD'))
 );
 ```
 
