@@ -1,0 +1,11 @@
+{
+	"require": {
+		"phpunit/phpunit": "3.7.18",
+		"kriswallsmith/buzz": "v0.9"
+	},
+	"autoload": {
+		"psr-0": {
+			"Dandelionmood": "lib/"
+		}
+	}
+}
