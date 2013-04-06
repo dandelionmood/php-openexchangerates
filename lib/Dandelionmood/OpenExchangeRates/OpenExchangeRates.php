@@ -17,8 +17,12 @@ class OpenExchangeRates
 	const PROTOCOL_HTTP = 'http';
 	const PROTOCOL_HTTPS = 'https';
 	
+	const HTTP_CLIENT_FILE_GET_CONTENTS = 'FileGetContents';
+	const HTTP_CLIENT_CURL = 'Curl';
+	
 	private $_app_id;
 	private $_protocol;
+	private $_http_client;
 	
 	/**
 		* API entry point format string.
@@ -31,11 +35,15 @@ class OpenExchangeRates
 		* 	https://openexchangerates.org/signup
 		* @param string protocol constant, you can switch to HTTP if you're
 		* 	using OpenExchangeRates free plan.
+		* @param string http client to use (self::HTTP_CLIENT_FILE_GET_CONTENTS
+		* 	by default or self::HTTP_CLIENT_CURL).
 	*/
-	function __construct( $app_id, $protocol = self::PROTOCOL_HTTPS )
+	function __construct( $app_id, $protocol = self::PROTOCOL_HTTPS,
+		$http_client = self::HTTP_CLIENT_FILE_GET_CONTENTS )
 	{
 		$this->_app_id = $app_id;
 		$this->_protocol = $protocol;
+		$this->_http_client = $http_client;
 	}
 	
 	/**
@@ -94,8 +102,10 @@ class OpenExchangeRates
 		$get = http_build_query( $params );
 		$url = sprintf( self::$_fmt_api, $this->_protocol, $api_name ).'?'.$get;
 		
-		$browser = new Browser();
-		$response = $browser->get($url);
+		// We instanciate the HTTP client that is present in the configuration.
+		$http_client = '\\Buzz\\Client\\'.$this->_http_client;
+		$browser = new Browser( new $http_client );
+		$response = $browser->get( $url );
 		
 		$json = json_decode( $response->getContent() );
 		

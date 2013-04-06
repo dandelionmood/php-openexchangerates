@@ -66,7 +66,9 @@ class OpenExchangeRatesTest extends \PHPUnit_Framework_TestCase
 	{
 		return new OpenExchangeRates(
 			self::$app_id,
-			OpenExchangeRates::PROTOCOL_HTTP
+			OpenExchangeRates::PROTOCOL_HTTP,
+			// Can be set to HTTP_CLIENT_CURL, depends on your configuration.
+			OpenExchangeRates::HTTP_CLIENT_FILE_GET_CONTENTS 
 		);
 	}
 	

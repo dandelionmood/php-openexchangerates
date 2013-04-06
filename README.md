@@ -83,3 +83,19 @@ $oer = new OpenExchangeRates(
 	OpenExchangeRates::PROTOCOL_HTTP
 );
 ```
+
+## Change HTTP Client
+
+The default setting is to use `file_get_contents` to work with the API. As this
+method is not available everywhere, you have the option to use `curl` instead,
+here's how :
+
+```php
+$oer = new OpenExchangeRates(
+	OPENEXCHANGERATE_APP_ID,
+	OpenExchangeRates::PROTOCOL_HTTP,
+	OpenExchangeRates::HTTP_CLIENT_CURL
+);
+```
+
+
